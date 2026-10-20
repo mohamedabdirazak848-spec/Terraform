@@ -1,6 +1,6 @@
 # Provider Block
-terraform{
-  
+terraform {
+
   #Assumes s3 bucket and dynamodb table already created 
   #backend "s3" {
   #  bucket = "devops-directive-tf-state"
@@ -12,15 +12,15 @@ terraform{
 
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 6.0"
     }
   }
 }
 
-provider "aws"{
-    profile = "default"
-    region = "eu-west-2"
+provider "aws" {
+  profile = "default"
+  region  = "eu-west-2"
 }
 
 locals {
@@ -32,11 +32,11 @@ locals {
 resource "aws_instance" "app_server_1" {
   ami           = var.ami # Ubuntu Server
   instance_type = var.ec2_instance_type
-  key_name = "moh2"
+  key_name      = "moh2"
 
   vpc_security_group_ids = [aws_security_group.firewall.id]
 
-    user_data = <<-EOF
+  user_data = <<-EOF
                 #!bin/bash
                 apt update -y
                 apt install docker.io -y
@@ -52,11 +52,11 @@ resource "aws_instance" "app_server_1" {
 resource "aws_instance" "app_server_2" {
   ami           = var.ami # Ubuntu Server
   instance_type = var.ec2_instance_type
-  key_name = "moh2"
+  key_name      = "moh2"
 
   vpc_security_group_ids = [aws_security_group.firewall.id]
 
-    user_data = <<-EOF
+  user_data = <<-EOF
                 #!bin/bash
                 apt update -y
                 apt install docker.io -y
@@ -72,31 +72,31 @@ resource "aws_instance" "app_server_2" {
 
 # Firewall Rule
 resource "aws_security_group" "firewall" {
-      name        = "firewall"
-    description = "Allow HTTP and SSH inbound traffic"
+  name        = "firewall"
+  description = "Allow HTTP and SSH inbound traffic"
 
-    ingress {
-        description ="HTTP"
-        from_port = 80
-        to_port = 80
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    ingress {
-        description = "SSH"
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 #resource "aws_s3_bucket" "bucket" {
@@ -121,7 +121,7 @@ resource "aws_lb_listener" "http" {
   protocol          = "HTTP"
 
   default_action {
-    type             = "fixed-response"
+    type = "fixed-response"
     fixed_response {
       content_type = "text/plain"
       message_body = "Not Found"
@@ -186,20 +186,20 @@ resource "aws_security_group_rule" "allow_alb_http_inbound" {
   type              = "ingress"
   security_group_id = aws_security_group.alb.id
 
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  from_port   = 80
+  to_port     = 80
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
 }
 
 resource "aws_security_group_rule" "allow_alb_http_outbound" {
   type              = "egress"
   security_group_id = aws_security_group.alb.id
 
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
-  cidr_blocks       = ["0.0.0.0/0"]
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
 }
 
 data "aws_subnets" "default_subnets" {
@@ -210,20 +210,20 @@ data "aws_subnets" "default_subnets" {
 }
 
 resource "aws_lb" "load_balancer" {
-  name = "web-app-lb"
+  name               = "web-app-lb"
   load_balancer_type = "application"
-  security_groups = [aws_security_group.alb.id]
-  subnets = data.aws_subnets.default_subnets.ids
+  security_groups    = [aws_security_group.alb.id]
+  subnets            = data.aws_subnets.default_subnets.ids
 }
 
 # resource "aws_db_instance" "db_instance" {
-  #allocated_storage    = 20
-  #storage_type         = "standard"
-  #engine               = "postgres"
-  #engine_version       = "13"
-  #instance_class       = "db.t3.micro"
-  #db_name              = "mydb"
-  #username             = "admin"
-  #password             = "password123"
-  #skip_final_snapshot  = true
+#allocated_storage    = 20
+#storage_type         = "standard"
+#engine               = "postgres"
+#engine_version       = "13"
+#instance_class       = "db.t3.micro"
+#db_name              = "mydb"
+#username             = "admin"
+#password             = "password123"
+#skip_final_snapshot  = true
 #}
