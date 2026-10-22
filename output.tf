@@ -32,3 +32,15 @@ output "load_balancer_dns" {
   description = "DNS name of the load balancer"
   value       = aws_lb.load_balancer.dns_name
 }
+
+output "lb_zone_id" {
+  value = aws_lb.load_balancer.zone_id
+}
+
+output "name_servers" {
+value = aws_route53_zone.primary.name_servers
+}
+
+output "domain_url" {
+  value = "http://${var.domain_name}"
+}

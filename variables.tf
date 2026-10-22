@@ -28,6 +28,11 @@ variable "ami" {
   default     = "ami-0224ce6f9504665ee" # Ubuntu Server
 }
 
+variable "domain_name" {
+  type    = string
+  default = "buildsphere.dev"
+}
+
 #variable "db_user" {
 #    description = "Database username"
 #    type = string

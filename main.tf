@@ -217,11 +217,6 @@ resource "aws_lb" "load_balancer" {
 }
 
 
-resource "aws_route53_zone" "primary" {
-  name = "buildsphere.dev"
-}
-
-
 # resource "aws_db_instance" "db_instance" {
 #allocated_storage    = 20
 #storage_type         = "standard"
