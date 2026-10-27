@@ -19,8 +19,7 @@ terraform {
 }
 
 provider "aws" {
-  profile = "default"
-  region  = "eu-west-2"
+  region = "eu-west-2"
 }
 
 locals {
@@ -72,7 +71,7 @@ resource "aws_instance" "app_server_2" {
 
 # Firewall Rule
 resource "aws_security_group" "firewall" {
-  name = "firewall-${var.environment_name}"
+  name        = "firewall-${var.environment_name}"
   description = "Allow HTTP and SSH inbound traffic"
 
   ingress {
@@ -135,7 +134,7 @@ data "aws_vpc" "default_vpc" {
 }
 
 resource "aws_lb_target_group" "instances" {
-  name = "app-tg-${var.environment_name}"
+  name     = "app-tg-${var.environment_name}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default_vpc.id
@@ -210,7 +209,7 @@ data "aws_subnets" "default_subnets" {
 }
 
 resource "aws_lb" "load_balancer" {
-  name = "web-app-lb-${var.environment_name}"
+  name               = "web-app-lb-${var.environment_name}"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = data.aws_subnets.default_subnets.ids
