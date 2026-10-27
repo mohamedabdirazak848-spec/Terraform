@@ -38,7 +38,7 @@ output "lb_zone_id" {
 }
 
 output "name_servers" {
-value = aws_route53_zone.primary.name_servers
+value = var.create_dns_zone ? aws_route53_zone.primary[0].name_servers : data.aws_route53_zone.primary[0].name_servers
 }
 
 output "domain_url" {

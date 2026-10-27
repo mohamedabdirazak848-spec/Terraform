@@ -30,7 +30,7 @@ variable "ami" {
 
 variable "domain_name" {
   type    = string
-  default = "buildsphere.dev"
+  default = "projectsphere.dev"
 }
 
 #variable "db_user" {
@@ -44,3 +44,20 @@ variable "domain_name" {
 #    type = string
 #    sensitive = true
 #}
+
+variable "create_dns_zone" {
+  type        = bool
+  description = "Whether to create a new Route 53 zone or look up an existing one"
+  default     = false
+}
+
+variable "domain" {
+  type        = string
+  description = "Root domain name, for example example.com"
+  default     = "projectsphere.dev"
+}
+
+variable "environment_name" {
+  type        = string
+  description = "Environment name: global, staging or production"
+}
