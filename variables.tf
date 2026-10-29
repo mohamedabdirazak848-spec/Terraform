@@ -61,3 +61,8 @@ variable "environment_name" {
   type        = string
   description = "Environment name: global, staging or production"
 }
+
+variable "zone_id" {
+  description = "Route 53 hosted zone ID created by the global root"
+  type        = string
+}
