@@ -7,6 +7,7 @@ data "aws_route53_zone" "primary" {
   count = var.create_dns_zone ? 0 : 1
   name  = var.domain
 }
+
 locals {
   dns_zone_id = var.create_dns_zone ? aws_route53_zone.primary[0].zone_id : data.aws_route53_zone.primary[0].zone_id
   subdomain   = var.environment_name == "production" ? "" : "${var.environment_name}."
