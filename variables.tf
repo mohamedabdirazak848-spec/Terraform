@@ -65,4 +65,5 @@ variable "environment_name" {
 variable "zone_id" {
   description = "Route 53 hosted zone ID created by the global root"
   type        = string
+  default     = null
 }
